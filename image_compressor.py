@@ -1,26 +1,9 @@
-# To run this script, you need to install Pillow library
-# pip install Pillow
-
-# To run:
-# python image_compressor.py
-
 import os
 from PIL import Image
+from tkinter import Tk
+from tkinter.filedialog import askopenfilenames
 
-# Get the current directory
-current_directory = os.path.dirname(os.path.abspath(__file__))
-
-# Set the directory containing the images
-directory = os.path.join(current_directory, 'images')
-
-# only these file types will be compressed
-valid_extensions = ['jpg', 'jpeg', 'png']
-
-image_files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) 
-               and f.lower().split('.')[-1] in valid_extensions]
-
-for filename in image_files:
-    filepath = os.path.join(directory, filename)
+def compress_image(filepath):
     try:
         # Get the file size before compression
         size_before = os.path.getsize(filepath)
@@ -34,6 +17,29 @@ for filename in image_files:
         size_after = os.path.getsize(filepath)
 
         # Print the success message with sizes before and after compression
-        print(f"Successfully compressed {filename}. Size before: {size_before / 1024:.2f}KB. Size after: {size_after / 1024:.2f}KB.")
+        print(f"Successfully compressed {os.path.basename(filepath)}. Size before: {size_before / 1024:.2f}KB. Size after: {size_after / 1024:.2f}KB.")
     except Exception as e:
-        print(f"Failed to compress image {filename}. Error: {str(e)}")
+        print(f"Failed to compress image {os.path.basename(filepath)}. Error: {str(e)}")
+
+# Create a Tk root widget
+root = Tk()
+
+# Hide the main window
+root.withdraw()
+
+# Raise the file dialog to the front of screen
+root.lift()
+root.attributes('-topmost',True)
+
+# Only these file types will be opened
+filetypes = [('JPEG files', '*.jpg'), ('JPEG files', '*.jpeg'), ('PNG files', '*.png')]
+
+# Open the file dialog
+filepaths = askopenfilenames(filetypes=filetypes)
+
+# Compress each selected image
+for filepath in filepaths:
+    compress_image(filepath)
+
+# Destroy the root widget
+root.destroy()
