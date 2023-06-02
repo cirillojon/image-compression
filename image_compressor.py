@@ -11,7 +11,7 @@ def compress_image(filepath):
         # Compress and save each image
         with Image.open(filepath) as image:
             # Adjust quality to control the compression level
-            image.save(filepath, optimize=True, quality=50)
+            image.save(filepath, optimize=True, quality=25)
         
         # Get the file size after compression
         size_after = os.path.getsize(filepath)
