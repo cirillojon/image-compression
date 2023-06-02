@@ -1,6 +1,3 @@
-# to run
-# python image_compressor.py
-
 import os
 from PIL import Image
 
@@ -17,9 +14,20 @@ image_files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(d
                and f.lower().split('.')[-1] in valid_extensions]
 
 for filename in image_files:
+    filepath = os.path.join(directory, filename)
     try:
+        # Get the file size before compression
+        size_before = os.path.getsize(filepath)
+        
         # Compress and save each image
-        with Image.open(os.path.join(directory, filename)) as image:
-            image.save(os.path.join(directory, filename), optimize=True, quality=85)
+        with Image.open(filepath) as image:
+            # Adjust quality to control the compression level
+            image.save(filepath, optimize=True, quality=50)
+        
+        # Get the file size after compression
+        size_after = os.path.getsize(filepath)
+
+        # Print the success message with sizes before and after compression
+        print(f"Successfully compressed {filename}. Size before: {size_before / 1024:.2f}KB. Size after: {size_after / 1024:.2f}KB.")
     except Exception as e:
         print(f"Failed to compress image {filename}. Error: {str(e)}")
