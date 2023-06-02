@@ -1,3 +1,9 @@
+# To run this script, you need to install Pillow library
+# pip install Pillow
+
+# To run:
+# python image_compressor.py
+
 import os
 from PIL import Image
 
